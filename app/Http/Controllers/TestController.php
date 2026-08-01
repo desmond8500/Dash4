@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\LaravelPdf\Facades\Pdf;
 
+
+
 class TestController extends Controller
 {
+
     static function pdf(){
         // Generate PDF
         $pdf = Pdf::view('_pdf.test_pdf', [
