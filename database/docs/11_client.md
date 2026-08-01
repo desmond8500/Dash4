@@ -1,8 +1,12 @@
 # [Client](readme.md)
 
-## Description
+## Modèle
 
-## Sttucture
+```php
+
+```
+
+## Structure
 
 ```md
 client

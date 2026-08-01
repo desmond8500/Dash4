@@ -17,7 +17,7 @@ new class extends Component
             <a href="/test-pdf" target="_blank" class="btn btn-primary">Generate PDF</a>
         </li>
         <li>
-            <a href="/api/documentation" target="_blank" class="btn btn-primary">Swagger</a>
+            <a href="/customers" wire:navigate  class="btn btn-primary">Clients</a>
         </li>
         <li>
             <a href="/docs/api" target="_blank" class="btn btn-primary">Scrammble</a>

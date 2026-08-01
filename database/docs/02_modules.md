@@ -81,3 +81,40 @@ Exemple de rôles :
 - Maintenance préventive avec alertes
 - Signature électronique des rapports
 - Portail client pour consulter devis, factures et interventions
+
+
+## Modules
+
+```markdown
+Dashboard
+│
+├── CRM
+│   ├── Clients
+│   ├── Contacts
+│   └── Sites
+│
+├── Technique
+│   ├── Equipements
+│   ├── Contrats
+│   ├── Interventions
+│   └── Maintenance
+│
+├── Commercial
+│   ├── Devis
+│   ├── Commandes
+│   └── Factures
+│
+├── Stock
+│   ├── Articles
+│   ├── Entrées
+│   └── Sorties
+│
+├── RH
+│   ├── Techniciens
+│   └── Planning
+│
+└── Administration
+    ├── Utilisateurs
+    ├── Rôles
+    └── Paramètres
+```

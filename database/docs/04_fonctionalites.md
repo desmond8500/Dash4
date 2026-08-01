@@ -1,12 +1,12 @@
 # [Fonctionnalités](readme.md)
 
-## To do
+## Doneo
 
 - [x] Exporter en PDF
+- [x] Swagger
 
 ## To do
 
-- [] 
 - [] 
 - [] 
 - [] 
