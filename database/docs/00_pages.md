@@ -2,17 +2,18 @@
 
 ## Welcome
 
-1. [] WelcomePage
+1. [x] WelcomePage
 
 ## Authentification
 
-1. [] LoginPage
-2. [] RegisterPage
-3. [] ForgottenPage
+1. [x] LoginPage
+2. [x] RegisterPage
+3. [x] ResetPage
 
 ## Personal
 
-1. [] CVsPage
+1. [x] CVsPage
+2. [x] CVPage
 
 ## CRM
 
@@ -21,17 +22,10 @@
    2. [x] ProjectsPage
       1. [x] ProjectPage
          1. [x] QuotationPage
-1. [x] TasksPage
+2. [x] TasksPage
    1. [x] TaskPage
 3. [x] Company
 4. [x] QuotationModelPage
-5. [] TeamPage
-6.  [] Contrats
-7.  [] Contrat
-8.  [] Planning
-9.  [] Reports
-10. [] Orders
-11. [] Maintenance
 
 ## Human Resources
 
@@ -43,23 +37,21 @@
 ### Configuration
 
 1. [] DashboardPage
-2. [] UsersPage
-3. [] PermissionsPage
+2. [x] UsersPage
 
 ## Inventory
 
-1. [] ItemsPage
-   1. [] ItemPage
-2. [] SuppliersPage
-   1. [] SupplierPage
-3. [] BrandsPage
-   1. [] BrandPage
-4. [] PurchasesPage
-   1. [] PurchasePage
-5. [] StockConfigPage
-6. [] WishlistPage
-7. [] Tools
-8. [] Storage
+1. [x] ItemsPage
+   1. [x] ItemPage
+2. [x] SuppliersPage
+   1. [x] SupplierPage
+3. [x] BrandsPage
+   1. [x] BrandPage
+4. [x] PurchasesPage
+   1. [x] PurchasePage
+5. [x] InventorySettingsPage
+6. [x] ordersPage
+7. [x] Storage
 
 ## Medias
 
@@ -74,21 +66,17 @@
 
 ## Tools
 
-1. [] SoftwaresPages
+1. [x] SoftwaresPages
 2. [] QuotesPages
-3. [] KitsPage
-4. [] WebsitesPage
-5. [] PersonasPage
+3. [x] KitsPage
+4. [x] WebsitesPage
+5. [x] PersonasPage
 6. [x] TestPage
-
-## Tasks
-
-
 
 ## Accounting
 
-1. [] FinancesPages
-1. [] Journaux
-1. [] Dépenses
-1. [] Recettes
-1. [] Rapports
+1. [x] invoices
+   1. [x] invoice
+2. [] Dépenses
+3. [] Recettes
+4. [] Rapports
