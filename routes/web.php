@@ -4,7 +4,7 @@ use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
 // Welcome Page
-Route::livewire('/', 'pages::welcome-page')->name('welcome-page');
+Route::livewire('/', 'pages::welcome-page')->name('welcome');
 
 // Auth
 Route::livewire('/login', 'pages::auth.login-page')->name('login');
@@ -65,5 +65,6 @@ Route::livewire('/users', 'pages::config.users-page')->name('users');
 // Test
 Route::get('test-pdf', function () {
     return TestController::pdf();
-})->name('task_pdf');
+    })->name('test_pdf');
+Route::livewire('/test', 'pages::tests.test-page')->name('test');
 

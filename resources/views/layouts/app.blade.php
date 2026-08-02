@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    @livewire('navbar')
     <main class="container">
         {{ $slot }}
         @livewireScripts
