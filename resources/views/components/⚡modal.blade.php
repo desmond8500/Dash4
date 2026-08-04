@@ -4,37 +4,71 @@ use Livewire\Component;
 
 new class extends Component
 {
-    public $showModal = false;
-    public $content = '';
+    public bool $showModal = false;
+    public string $content = '';
+
+    public function openModal()
+    {
+        $this->content = 'Bonjour depuis Livewire !';
+        $this->showModal = true;
+    }
+
+    public function closeModal()
+    {
+        $this->showModal = false;
+    }
 
     public function save()
     {
-        Post::create(['content' => $this->content]);
-        $this->reset('content');
- 
-        $this->showModal = false;
+        // Traitement...
+
+        $this->closeModal();
     }
+
+   
 };
 ?>
 
 <div>
-    <button x-on:click="$wire.showModal = true">New Post</button>
 
-    <div class="dropdown open">
-        <button class="btn btn-action" type="button" id="triggerId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-            <i class="ti ti-chevron-down"></i>
-        </button>
-        <div class="dropdown-menu" aria-labelledby="triggerId">
-            <a class="dropdown-item" wire:click="edit_brand()"> <i class="ti ti-edit"></i> Editer</a>
-            <a class="dropdown-item text-danger" wire:click="delete_brand()"> <i class="ti ti-trash"></i> Supprimer</a>
+    <button class="btn btn-primary" wire:click="openModal">
+        Ouvrir
+    </button>
+
+    @if($showModal)
+    <div class="modal fade show d-block" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+
+                    <button class="btn-close" wire:click="closeModal">
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    {{ $content }} 
+                    {{ $slot }} 
+                </div>
+
+                <div class="modal-footer">
+
+                    <button class="btn btn-secondary" wire:click="closeModal">
+                        Fermer
+                    </button>
+
+                    <button class="btn btn-primary" wire:click="save">
+                        Enregistrer
+                    </button>
+
+                </div>
+
+            </div>
         </div>
     </div>
-    
-    <div wire:show="showModal" x-transition.duration.500ms>
-        <form wire:submit="save">
-            <textarea wire:model="content"></textarea>
-    
-            <button type="submit">Save Post</button>
-        </form>
-    </div>
+
+    <div class="modal-backdrop fade show"></div>
+    @endif
+
 </div>
