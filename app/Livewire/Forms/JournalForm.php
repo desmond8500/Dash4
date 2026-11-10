@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Livewire\Forms;
+
+use App\Models\Journal;
+use Livewire\Attributes\Rule;
+use Livewire\Form;
+
+class JournalForm extends Form
+{
+    public Journal $journal;
+
+    public $id;
+    #[Rule('required')]
+    public $user_id;
+    public $client_id;
+    public $projet_id;
+    public $devis_id;
+    #[Rule('required')]
+    public $title;
+    #[Rule('required')]
+    public $date;
+    public $description;
+    public $type;
+
+    function fix(){
+        $this->title = ucfirst($this->title);
+    }
+
+    function store(){
+        $this->user_id = auth()->user()->id;
+        $this->validate();
+        $this->fix();
+        return Journal::create($this->all());
+    }
+
+    function set($model_id){
+        $this->journal = Journal::find($model_id);
+
+        $this->user_id = $this->journal->user_id;
+        $this->client_id = $this->journal->client_id;
+        $this->projet_id = $this->journal->projet_id;
+        $this->devis_id = $this->journal->devis_id;
+        $this->title = $this->journal->title;
+        $this->date = $this->journal->date;
+        $this->description = $this->journal->description;
+        $this->type = $this->journal->type;
+    }
+
+    function update(){
+        $this->fix();
+        $this->validate();
+        $this->journal->update($this->all());
+    }
+
+    function delete(){
+        $this->journal->delete();
+    }
+
+}

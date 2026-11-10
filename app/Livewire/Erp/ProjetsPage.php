@@ -1,0 +1,108 @@
+<?php
+
+namespace App\Livewire\Erp;
+
+use App\Livewire\Forms\clientForm;
+use App\Livewire\Forms\ProjetForm;
+use App\Models\Client;
+use App\Models\Contact;
+use App\Models\Projet;
+use App\Models\Task;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Session;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+use Livewire\WithPagination;
+
+class ProjetsPage extends Component
+{
+    use WithPagination;
+    use WithFileUploads;
+    protected $paginationTheme = 'bootstrap';
+
+    public $search = '';
+    public mixed $breadcrumbs;
+    public $client_id = 0;
+    public mixed $selected;
+    public projetForm $projetForm;
+    #[Session()]
+    public $tab = 'projets';
+
+    #[On('select-projets_tab')]
+    function setTab(string $tab) {
+        $this->tab = $tab;
+    }
+
+    public function mount(int $client_id)
+    {
+        $this->client_id = $client_id;
+        $this->projetForm->client_id = $client_id;
+        $client = Client::find($client_id);
+
+        $this->breadcrumbs = array(
+            array('name' => 'Clients', 'route' => route('clients')),
+            array('name' => $client->name, 'route' => route('projets',['client_id'=>$client->id])),
+        );
+    }
+
+
+    public function render()
+    {
+        return view('livewire.erp.projets-page', [
+            'projets' => Projet::where('client_id',$this->client_id)->orderBy('name')->search($this->search)->paginate(20),
+            'taches' => Task::where('client_id', $this->client_id)->get(),
+            'contacts' => Contact::where('client_id', $this->client_id)->get(),
+        ]);
+    }
+
+    function store() {
+        $this->projetForm->store();
+        $this->dispatch('close-addProjet');
+        $this->reset('projetForm.name', 'projetForm.description');
+    }
+
+    function edit(int $projet_id) {
+        $this->selected = Projet::find($projet_id);
+
+        $this->projetForm->set($projet_id);
+        $this->dispatch('open-modal', id:'open-editProjet');
+    }
+
+    function update() {
+        $this->projetForm->update();
+        $this->dispatch('close-editProjet');
+    }
+
+    function delete(int $projet_id) {
+        $this->selected = Projet::find($projet_id);
+        $this->selected->delete();
+        $this->dispatch('close-editProjet');
+    }
+
+    function toggleFavorite()
+    {
+        $this->projetForm->favorite();
+    }
+
+    function toggleFavorite2(int $projet_id)
+    {
+        $this->projetForm->set($projet_id);
+        $this->projetForm->favorite();
+    }
+
+    // Client
+    public clientForm $clientForm;
+
+    function edit_client(int $client_id)
+    {
+        $this->clientForm->set($client_id);
+        $this->dispatch('open-editClient');
+    }
+
+    function update_client()
+    {
+        $this->clientForm->update($this->selected);
+        $this->dispatch('close-editClient');
+        $this->render();
+    }
+}

@@ -1,0 +1,66 @@
+<table class="table mb-1">
+    <tr>
+        <td colspan="3" class="text-center bg-green" style="background: #{{ $color1 }}">{{ strtoupper("Bordereau de $bl->type") }}</td>
+    </tr>
+    <tr>
+        <td width="50px">
+            @if ($bl->logo)
+                <img src="{{ public_path('img/tyto/logo.png') }}" width="50px" alt="Logo">
+            @else
+                <img src="{{ public_path('img/tyto/logo.png') }}" width="50px" alt="Logo">
+            @endif
+        </td>
+        <td>
+            <div><b>Client :</b> {{ $invoice->client_name ?? $invoice->projet->client->name }}</div>
+            <div><b>Projet :</b> {{ $invoice->projet->name }}</div>
+        </td>
+        <td width="200px" class="text-end">
+            <div>{{ $carbon->format('d-m-Y')}}</div>
+            <div> <span class="text-muted">#{{ strtoupper($invoice->reference) }}</span></div>
+        </td>
+    </tr>
+</table>
+
+<table class="table mb-1">
+    <tr>
+        <td colspan="3" >
+            <div class="fw-bold">Description :</div>
+            <div>
+                <x-markdown>
+                 {{ $invoice->description }}
+                </x-markdown>
+            </div>
+        </td>
+    </tr>
+</table>
+
+@if ($bl->done)
+    <table class="table mb-1">
+        <tr>
+            <td colspan="3" >
+                <div class="fw-bold">Travaux Effectués :</div>
+                <div>
+                    <x-markdown>
+                     {{ $bl->done }}
+                    </x-markdown>
+                </div>
+            </td>
+        </tr>
+    </table>
+@endif
+
+@if ($bl->todo)
+    <table class="table mb-1">
+        <tr>
+            <td colspan="3" >
+                <div class="fw-bold">Travaux restants :</div>
+                <div>
+                    <x-markdown>
+                     {{ $bl->todo }}
+                    </x-markdown>
+                </div>
+            </td>
+        </tr>
+    </table>
+@endif
+

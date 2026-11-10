@@ -1,0 +1,140 @@
+<?php
+
+namespace App\Models;
+
+use App\Traits\dateTrait;
+use App\Traits\searchTrait;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+class Task extends Model
+{
+    use HasFactory;
+    use searchTrait;
+    use dateTrait;
+
+    /**
+ * @OA\Schema(
+ *     schema="Task",
+ *     title="Task",
+ *     description="Modèle d'une tâche",
+ *     @OA\Property(
+ *         property="id",
+ *         type="integer",
+ *         example=1
+ *     ),
+ *     @OA\Property(
+ *         property="title",
+ *         type="string",
+ *         example="Installer Laravel"
+ *     ),
+ *     @OA\Property(
+ *         property="description",
+ *         type="string",
+ *         example="Installation complète du projet"
+ *     ),
+ *     @OA\Property(
+ *         property="completed",
+ *         type="boolean",
+ *         example=false
+ *     ),
+ *     @OA\Property(
+ *         property="created_at",
+ *         type="string",
+ *         format="date-time",
+ *         example="2026-05-10T12:00:00Z"
+ *     ),
+ *     @OA\Property(
+ *         property="updated_at",
+ *         type="string",
+ *         format="date-time",
+ *         example="2026-05-10T12:00:00Z"
+ *     )
+ * )
+ */
+
+
+    protected $fillable = [
+        'client_id',
+        'projet_id',
+        'devis_id',
+        'building_id',
+        'stage_id',
+        'room_id',
+        'name',
+        'description',
+        'priority_id',
+        'statut_id',
+        'expiration_date',
+        'start_date',
+        'end_date',
+        'favoris',
+        'journal_id',
+    ];
+
+    protected $with = ['room'];
+
+
+    public function scopeActive($query, $search)
+    {
+        return $query->where('statut_id', '!=' , 4)->search($search)->orderBy('priority_id');
+    }
+
+    public function scopeFinished($query, $search)
+    {
+        return $query->where('statut_id', 4)->search($search)->orderBy('priority_id');
+    }
+
+    public function scopeActiveCount($query)
+    {
+        return $query->where('statut_id', '!=', 4)->orderBy('priority_id')->count();
+    }
+
+    public function scopeInactiveCount($query)
+    {
+        return $query->where('statut_id', 4)->orderBy('priority_id')->count();
+    }
+
+    public function priority(): HasOne
+    {
+        return $this->hasOne(TaskPriority::class, 'id', 'priority_id');
+    }
+
+    public function statut(): HasOne
+    {
+        return $this->hasOne(TaskStatus::class, 'id', 'statut_id');
+    }
+
+    public function client(): BelongsTo{
+        return $this->belongsTo(Client::class);
+    }
+
+    public function projet(): BelongsTo{
+        return $this->belongsTo(Projet::class);
+    }
+
+    public function building(): BelongsTo{
+        return $this->belongsTo(Building::class);
+    }
+
+    public function stage(): BelongsTo{
+        return $this->belongsTo(Stage::class);
+    }
+
+    public function room(): BelongsTo{
+        return $this->belongsTo(Room::class);
+    }
+
+    public function devis(): BelongsTo{
+        return $this->belongsTo(Invoice::class, 'devis_id');
+    }
+
+    function subtasks(): HasMany{
+        return $this->hasMany(Subtask::class, 'task_id');
+    }
+
+
+}

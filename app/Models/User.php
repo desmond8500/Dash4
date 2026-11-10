@@ -3,61 +3,67 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
+
+use App\Traits\searchTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+use Zap\Models\Concerns\HasSchedules;
 
-/**
- * @property int $id
- * @property string $name
- * @property string $email
- * @property Carbon|null $email_verified_at
- * @property string $password
- * @property string|null $remember_token
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- */
-#[Fillable([
-    'firstname',
-    'lastname',
-    'avatar',
-    'email',
-    'password',
-    'job_title',
-    ])]
-#[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
+    use HasRoles;
+    use searchTrait;
+    use HasSchedules;
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that are mass assignable.
      *
-     * @return array<string, string>
+     * @var array<int, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $fillable = [
+        'firstname',
+        'lastname',
+        'avatar',
+        'email',
+        'password',
+        'function',
+    ];
+
+    protected $rules = [
+        'name'     => 'required|string|min:3',
+        'email'    => 'required|email|unique:users',
+        'password' => 'required|min:8',
+    ];
 
     /**
-     * Get the user's initials
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
      */
-    public function initials(): string
-    {
-        $initials = Str::initials($this->name, true);
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
 
-        return Str::length($initials) > 1
-            ? Str::substr($initials, 0, 1).Str::substr($initials, -1)
-            : $initials;
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+    public function setting(): HasOne
+    {
+        return $this->hasOne(setting::class);
     }
+
+
 }

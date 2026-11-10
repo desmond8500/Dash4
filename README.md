@@ -1,13 +1,82 @@
-# Dash4
+# Dash3
 
 ## Description
 
-The new version of our Security Company Management ERP.
+Erp version 3
 
-## Librairies
+## Prerequis
 
-- [Laravel 13](https://laravel.com/docs/13.x)
-- [Livewire](https://livewire.laravel.com/)
-- Laravel Sanctum
-- [Laravel PDF](https://spatie.be/docs/laravel-pdf/v2/introduction)
-- [Scramble](https://scramble.dedoc.co/installation)
+* [PHP 8.4](https://www.php.net/downloads.php)
+
+## Source
+
+* [Laravel 11](https://laravel.com/docs/11.x/installation)
+* [Laravel Livewire](https://livewire.laravel.com/docs/quickstart)
+* [Laravel Lang](https://laravel-lang.com/)
+* [Laravel Permission](https://spatie.be/docs/laravel-permission/v6/installation-laravel)
+* [Laravel Markdown](https://spatie.be/docs/laravel-markdown/v1/installation-setup)
+* [Laravel Excel](https://docs.laravel-excel.com/3.1/getting-started/installation.html)
+* [Laravel logViewer](https://log-viewer.opcodes.io/)
+* [Laravel Sanctum](https://laravel.com/docs/master/sanctum)
+* [Laravel telescope](https://laravel.com/docs/master/telescope)
+* [Laravel Tags](https://spatie.be/docs/laravel-tags/v4/installation-and-setup)
+* [Laravel Livewire Async Select](https://github.com/drpshtiwan/livewire-async-select)
+* [Laravel Envoy](https://laravel.com/docs/13.x/envoy)
+
+## Installation
+
+```console
+git clone https://github.com/desmond8500/Dash3.git
+```
+
+```console
+composer install
+```
+
+```console
+npm install
+```
+
+```console
+cp .env.example .env
+```
+
+```console
+php artisan key:generate
+```
+
+```console
+php artisan migrate
+```
+
+Mettre `DB_CONNECTION=sqlite`
+
+## Traits
+
+* Cardes
+  * php artisan app:card card_name
+* Modèles
+  * php artisan app:dash model_name
+  * --f|form : Formulaire livewire
+  * --p|page : page livewire
+  * --ps|pages : pages livewire
+  * --a|add : Composant livewire
+  * --all : Toutes les options
+* Documentation
+  * php artisan app:docs doc_name
+* Formulaire
+  * php artisan app:forms form_name
+
+## Commandes Artisan
+
+### Générer un modèle avec ses dépendances
+
+```console
+php artisan app:model
+```
+
+## Swagger Generate
+
+```console
+php artisan l5-swagger:generate
+```

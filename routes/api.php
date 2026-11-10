@@ -1,17 +1,124 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\API\AchatController;
+use App\Http\Controllers\API\BrandAPIController;
+use App\Http\Controllers\API\ClientAPIController;
+use App\Http\Controllers\API\FactureController;
+use App\Http\Controllers\API\FavorisController;
+use App\Http\Controllers\API\InvoiceAPIController;
+use App\Http\Controllers\API\ItemsApiController;
+use App\Http\Controllers\API\JournalAPIController;
+use App\Http\Controllers\API\NoteAPIController;
+use App\Http\Controllers\Api\PersonaController;
+use App\Http\Controllers\API\ProjetAPIController;
+use App\Http\Controllers\API\ProviderAPIController;
+use App\Http\Controllers\API\TaskAPIController;
+use App\Http\Controllers\API\TransactionController;
+use App\Http\Controllers\DemoController;
+use App\Http\Controllers\LiensControlleur;
+use App\Http\Controllers\PDFController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:sanctum');
-
-Route::get('/login', function (Request $request) {
-    AuthController::login($request->email, $request->password);
 });
 
-Route::get('/logout', function (Request $request) {
-    AuthController::logout();
+Route::prefix('v1')->group( function () {
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login'])->middleware('throttle:6,1');
+Route::post('/logout', [UserController::class, 'logout']);
 });
+
+Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
+    Route::get('/me', [UserController::class, 'me']);
+});
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Auth
+    // Route::get('sign_in', 'UserController@sign_in')->name('sign_in');
+    // Route::get('sign_out', 'UserController@sign_out')->name('sign_out');
+    // Route::get('register', 'UserController@register')->name('register');
+    // Route::get('edit_password', 'UserController@edit_password')->name('edit_password');
+
+    // Users
+    // Route::get('users', 'UserController@users')->name('users');
+    // Route::post('user_add', 'UserController@user_add')->name('user_add');
+    // Route::post('user_update', 'UserController@user_update')->name('user_update');
+    // Route::post('user_delete', 'UserController@user_delete')->name('user_delete');
+
+});
+
+// Demo
+Route::get('demos', [DemoController::class, 'index'])->name('demos');
+// Clients
+Route::prefix('v1')->group(function () {
+    // Clients
+    Route::resource('clients', ClientAPIController::class);
+    Route::get('clients_projets/{id}', [ClientAPIController::class, 'getProjets']);
+    Route::get('clients_tasks/{id}', [ClientAPIController::class, 'getTasksByClient']);
+    // Projets
+    Route::resource('projets', ProjetAPIController::class);
+    Route::get('projet/tasks/{id}', [ProjetAPIController::class, 'getTasksByProjet']);
+    // Devis
+    Route::get('invoice/tasks/{id}', [ClientAPIController::class, 'getTasksByClient']);
+    // Building
+    Route::get('building/tasks/{id}', [ClientAPIController::class, 'getTasksByClient']);
+    // Stage
+    Route::get('stage/tasks/{id}', [ClientAPIController::class, 'getTasksByClient']);
+    // Room
+    Route::get('room/tasks/{id}', [ClientAPIController::class, 'getTasksByClient']);
+    // Journal
+    Route::resource('journaux', JournalAPIController::class);
+    // Route::get('projet', [ProjetAPIController::class, 'index']);
+    Route::resource('projet_notes', NoteAPIController::class);
+    Route::get('get_projet_notes/{projet_id}', [NoteAPIController::class, 'get_projet_notes']);
+});
+
+// Articles
+Route::prefix('v1')->group(function () {
+    Route::apiResource('items', ItemsApiController::class);
+    Route::get('items_image/{article_id}', [ItemsApiController::class, 'getImages']);
+    Route::get('items_link/{article_id}', [ItemsApiController::class, 'getLinks']);
+    Route::get('items_document/{article_id}', [ItemsApiController::class, 'getDocuments']);
+    Route::resource('providers', ProviderAPIController::class);
+    Route::resource('brands', BrandAPIController::class);
+});
+
+Route::prefix('v1')->group(function () {
+    // Devis
+    Route::apiResource('invoices', InvoiceAPIController::class);
+    Route::post('get_month_invoices', [InvoiceAPIController::class, 'get_month_invoices']);
+    Route::post('get_month_deposit', [InvoiceAPIController::class, 'get_month_invoices_deposit']);
+    Route::post('get_month_spents', [InvoiceAPIController::class, 'get_month_spents']);
+    Route::post('paid_invoices', [InvoiceAPIController::class, 'paid_invoices']);
+
+    Route::post('annual_paid_invoices', [InvoiceAPIController::class, 'annual_paid_invoices']);
+    Route::post('get_annual_invoices_deposit', [InvoiceAPIController::class, 'get_annual_invoices_deposit']);
+    // Facture
+    Route::get('factures', [FactureController::class, 'get_factures']);
+    Route::get('facture_pdf/{invoice_id}/{type}', function ($invoice_id, $type) {
+        return PDFController::facture_pdf($invoice_id, $type);
+    })->name('facture_pdf_api');
+    // Achats
+    Route::get('achats', [AchatController::class, 'get_achats']);
+    // Transaction
+    Route::get('transactions', [TransactionController::class, 'get_transactions']);
+    // Taches
+    Route::resource('tasks', TaskAPIController::class);
+    // Liens
+    Route::resource('liens', LiensControlleur::class);
+});
+
+// Favoris
+Route::prefix('v1')->group(function () {
+    Route::get('favoris', [FavorisController::class, 'getFavoris'])->name('favoris');
+});
+
+// Medias
+Route::prefix('v1')->group(function () {
+    Route::resource('personas', PersonaController::class);
+});
+
+

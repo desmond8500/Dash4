@@ -1,0 +1,112 @@
+<div class="row">
+    <div class="col-md-8 mb-3">
+        <label class="form-label">Client</label>
+        <input type="text" class="form-control" wire:model="invoice_form.client_name" placeholder="Nom du client">
+        @error('invoice_form.client_name') <span class='text-danger'>{{ $message }}</span> @enderror
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <label class="form-label">Statut</label>
+        <select wire:model="invoice_form.statut" class="form-select">
+            <option value="Proforma">Proforma</option>
+            <option value="Nouveau">Nouveau</option>
+            <option value="En Cours">En Cours</option>
+            <option value="En Pause">En Pause</option>
+            <option value="Annulé">Annulé</option>
+            <option value="Bl a faire">Bl a faire</option>
+            <option value="A Facturer">A Facturer</option>
+            <option value="Terminé">Terminé</option>
+        </select>
+        @error('invoice_form.statut') <span class='text-danger'>{{ $message }}</span> @enderror
+    </div>
+
+    <div class="col-md-8 mb-3">
+        <div class="mb-2">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" wire:model="invoice_form.description" placeholder="Description du devis" data-bs-toggle="autosize"></textarea>
+            @error('invoice_form.description') <span class="text-danger">{{ $message }}</span> @enderror
+        </div>
+        <div class="row">
+            <div class="mb-2 col-md-6">
+                <label class="form-label">Date de facturation</label>
+                <input type="date" class="form-control" wire:model="invoice_form.facture_date">
+                @error('invoice_form.facture_date') <span class='text-danger'>{{ $message }}</span> @enderror
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Date de paiment</label>
+                <input type="date" class="form-control" wire:model="invoice_form.paydate">
+                @error('invoice_form.paydate') <span class='text-danger'>{{ $message }}</span> @enderror
+            </div>
+        </div>
+
+        <div class="mb-2" x-data="{ expanded_modalite: false }" data-bs-toggle="tooltip" title="Cliquez pour dérouler">
+            <label class="form-label cursor-pointer" x-on:click="expanded_modalite = ! expanded_modalite">Modalités</label>
+            <textarea class="form-control" wire:model="invoice_form.modalite" placeholder="Modalités du devis"
+                data-bs-toggle="autosize" x-show="expanded_modalite"></textarea>
+            @error('invoice_form.modalite') <span class="text-danger">{{ $message }}</span> @enderror
+        </div>
+        <div class="mb-2" x-data="{ expanded_note: false }" data-bs-toggle="tooltip" title="Cliquez pour dérouler">
+            <label class="form-label cursor-pointer" x-on:click="expanded_note = ! expanded_note">Notes</label>
+            <textarea class="form-control" wire:model="invoice_form.note" placeholder="Notes du devis"
+                data-bs-toggle="autosize" x-show="expanded_note"></textarea>
+            @error('invoice_form.note') <span class="text-danger">{{ $message }}</span> @enderror
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-2">
+        <div class="mb-3" x-data="{ expanded_reference: false }">
+            <label class="form-label" type="button" x-on:click="expanded_reference = ! expanded_reference">Reference</label>
+            <input type="text" class="form-control" wire:model="invoice_form.reference" disabled x-show="expanded_reference">
+            @error('invoice_form.reference') <span class='text-danger'>{{ $message }}</span> @enderror
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Taxes</label>
+            <select wire:model="invoice_form.tax" class="form-select">
+                <option value="0">Pas de TVA</option>
+                <option value="tva">TVA 18%</option>
+                <option value="brs">BRS 5%</option>
+            </select>
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Projet</label>
+            <select wire:model="invoice_form.projet_id" class="form-select">
+                @isset($devis)
+                    @foreach ($devis->projet->client->projets->sortBy('name') as $projet)
+                        <option value="{{ $projet->id }}">{{ $projet->name }}</option>
+                    @endforeach
+                @endisset
+                @isset($invoice)
+                    @foreach ($invoice->projet->client->projets->sortBy('name') as $projet)
+                        <option value="{{ $projet->id }}">{{ $projet->name }}</option>
+                    @endforeach
+                @endisset
+                @isset($projet)
+                    @foreach ($projet->client->projets->sortBy('name') as $projet)
+                        <option value="{{ $projet->id }}">{{ $projet->name }}</option>
+                    @endforeach
+                @endisset
+            </select>
+        </div>
+        <div class="mb-2">
+            <label class="form-label">Remise</label>
+            <select wire:model="invoice_form.remise" class="form-select">
+                <option value="0">0%</option>
+                <option value="0.05">5%</option>
+                <option value="0.1">10%</option>
+                <option value="0.15">15%</option>
+                <option value="0.2">20%</option>
+                <option value="0.25">25%</option>
+                <option value="0.3">30%</option>
+                <option value="0.35">35%</option>
+                <option value="0.4">40%</option>
+                <option value="0.45">45%</option>
+                <option value="0.5">50%</option>
+            </select>
+        </div>
+        <div class="mb-2" x-data="{ expanded_emitdate: false }">
+            <label class="form-label" type="button" x-on:click="expanded_emitdate = ! expanded_emitdate">Date d'émission</label>
+            <input type="date" class="form-control" wire:model="invoice_form.emitdate"  x-show="expanded_emitdate">
+            @error('invoice_form.emitdate') <span class='text-danger'>{{ $message }}</span> @enderror
+        </div>
+    </div>
+</div>

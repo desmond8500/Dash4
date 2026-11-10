@@ -1,0 +1,93 @@
+<div>
+    @component('components.layouts.page-header', ['title'=> 'Fournisseurs', 'breadcrumbs'=> $breadcrumbs])
+        <div class="row">
+            <div class="col">
+                <div class="input-icon w-100">
+                    <input type="text" class="form-control form-control-rounded" wire:model.live="search"
+                        placeholder="Chercher un fournisseur">
+                    <span class="input-icon-addon ">
+                        <i class="ti ti-search"></i>
+                    </span>
+                </div>
+            </div>
+            <div class="col-auto">
+                @livewire('form.provider-add')
+            </div>
+        </div>
+    @endcomponent
+
+    <div class="row row-deck g-2">
+
+        @foreach ($providers as $provider)
+            <div class="col-md-4">
+                <div class="card p-2">
+                    <div class="row">
+                        <a class="col-auto" href="{{ route('provider',['provider_id'=>$provider->id]) }}">
+                            <img src="{{ $provider->logo ? asset($provider->logo) : asset('img/images/not_found.png') }}" alt="A" class="avatar avatar-xl">
+                        </a>
+                        <a class="col" href="{{ route('provider',['provider_id'=>$provider->id]) }}">
+                            <div class="card-title">{{ $provider->name }}</div>
+                            <div class="text-muted">{!! nl2br($provider->description) !!}</div>
+                            <div class="position-absolute bottom-0 mb-2">
+                                {{ $provider->article()->count() }}
+                                @if ($provider->article()->count() > 1)
+                                    Articles
+                                @else
+                                    Article
+                                @endif
+                            </div>
+                        </a>
+                        <div class="col-auto">
+                            <div class="dropdown open">
+                                <button class="btn btn-action" type="button" id="triggerId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                                    <i class="ti ti-chevron-down"></i>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="triggerId">
+                                    <a class="dropdown-item" wire:click="edit('{{ $provider->id }}')"> <i class="ti ti-edit"></i> Editer</a>
+                                    <a class="dropdown-item" wire:click="edit_logo('{{ $provider->id }}')"> <i class="ti ti-photo-edit"></i> Editer Logo</a>
+                                    <a class="dropdown-item text-danger" wire:click="delete('{{ $provider->id }}')"> <i class="ti ti-trash"></i> Supprimer</a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+        <div class="col-md-12">
+            {{ $providers->links() }}
+        </div>
+    </div>
+
+    @component('components.modal', ["id"=>'editProvider', 'title' => 'Editer un fournisseur', 'method'=>'update'])
+        <form class="row" wire:submit="update">
+            @include('_form.provider_form')
+        </form>
+        <script> window.addEventListener('open-editProvider', event => { window.$('#editProvider').modal('show'); }) </script>
+        <script> window.addEventListener('close-editProvider', event => { window.$('#editProvider').modal('hide'); }) </script>
+    @endcomponent
+
+    @component('components.modal', ["id"=>'editLogo', 'title' => 'Editer un logo', 'method'=>'update_logo'])
+    <form class="" wire:submit="update_logo">
+        <div class="text-center mb-3">
+            <div wire:loading wire:target='logo'>
+                Chargement <div class="spinner-border" role="status"></div>
+            </div>
+            <div class="my-2">
+                @if ($logo)
+                    @if (is_string($logo))
+                        <img src="{{ asset($logo) }}" class="avatar avatar-xl">
+                    @else
+                        <img src="{{ $logo->temporaryUrl() }}" class="avatar avatar-xl">
+                    @endif
+                    @else
+                    <input type="file" class="form-control" wire:model='logo'>
+                @endif
+            </div>
+        </div>
+    </form>
+    <script> window.addEventListener('open-editLogo', event => { window.$('#editLogo').modal('show'); }) </script>
+    <script> window.addEventListener('close-editLogo', event => { window.$('#editLogo').modal('hide'); }) </script>
+    @endcomponent
+
+</div>

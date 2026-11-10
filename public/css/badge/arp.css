@@ -1,0 +1,61 @@
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.flag{
+
+}
+
+.logo{
+
+}
+
+.photo{
+    width: 100px;
+    /* border: 1px solid black; */
+    margin-top: 20px;
+    margin-left: 20px;
+    border-radius: 15px;
+}
+
+.fonction{
+    background: #51c59e;
+    /* height: 40px; */
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+    padding: 3px;
+    border-radius: 5px;
+    /* width: 100%; */
+}
+
+.direction{
+    color: #51c59e;
+    font-size: 13px;
+    text-align: center;
+    margin-top: 5px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.service{
+    margin-top: 5px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+.nom{
+    text-transform: uppercase;
+    margin-bottom: 10px;
+
+}

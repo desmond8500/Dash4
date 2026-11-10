@@ -2,52 +2,47 @@
 
 namespace App\Livewire\Forms;
 
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Livewire\Attributes\Validate;
+use Livewire\Attributes\Rule;
 use Livewire\Form;
 
 class UserForm extends Form
 {
-    #[Validate('required', message: 'Le prénom est requis')]
-    public string $firstname;
-    #[Validate('required', message: 'Le nom est requis')]
-    public string $lastname;
-    #[Validate('required|email|unique:App\Models\User,email')]
-    public string $email;
-    #[Validate('required')]
-    public string $password;
-    #[Validate('required|same:password')]
-    public string $password_confirmation;
-    public string $function;
-    public string $avatar;
-    public string $job_title;
+    #[Rule('required', message: 'Le prénom est requis')]
+    public $firstname;
+    #[Rule('required', message: 'Le nom est requis')]
+    public $lastname;
+    #[Rule('required|email|unique:App\Models\User,email')]
+    public $email;
+    #[Rule('required')]
+    public $password;
+    #[Rule('required|same:password')]
+    public $password_confirmation;
+    public $function;
+    public $avatar;
 
     public User $user;
 
-    function store()
-    {
+    function store() {
         $this->validate();
         $this->firstname = ucfirst($this->firstname);
         $this->lastname = ucfirst($this->lastname);
         User::create($this->all());
+
     }
 
-    function set()
-    {
+    function set() {
         $this->user = User::find(auth()->user()->id);
-
         $this->firstname = auth()->user()->firstname;
         $this->lastname = auth()->user()->lastname;
         $this->function = auth()->user()->function;
         $this->avatar = auth()->user()->avatar;
-        $this->job_title = auth()->user()->job_title;
     }
 
-    function login(string $email, string $password)
-    {
+    function login($email, $password) {
         $credentials = array(
             'email' => $email,
             'password' => $password,
@@ -55,39 +50,21 @@ class UserForm extends Form
 
         if (Auth::attempt($credentials)) {
             return true;
-        } else {
+        }else {
             return false;
         }
     }
 
-    function storeAvatar($user, $avatar, $delete = false)
-    {
-        if (!is_string($this->avatar)) {
-            $dir = "users/$user->id/avatar";
-            if ($delete) {
-                Storage::disk('public')->deleteDirectory($dir);
-            }
-            $name = $avatar->getClientOriginalName();
-            $avatar->storeAs("public/$dir", $name);
-
-            $user->avatar = "storage/$dir/$name";
-            $user->save();
-        }
+    function update(){
+        $this->user->update($this->only('firstname', 'lastname', 'function'));
     }
 
-    function update()
-    {
-        $this->user->update($this->only('firstname', 'lastname', 'function', 'job_title'));
-    }
-
-    function logout()
-    {
+    function logout(){
         Auth::logout();
         return redirect()->intended('/');
     }
 
-    function updateAvatar($avatar)
-    {
+    function updateAvatar($avatar) {
         $user = auth()->user();
 
         $dir = "user/$user->id/avatar";
@@ -99,8 +76,7 @@ class UserForm extends Form
         $user->save();
     }
 
-    function update_password()
-    {
+    function update_password(){
         $this->validate();
         $this->user->password = Hash::make($this->password);
         $this->user->update($this->all());

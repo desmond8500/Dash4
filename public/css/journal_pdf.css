@@ -1,0 +1,39 @@
+h1, h2, h3, h4{
+    color: #0054a6;
+    padding-bottom: 3px;
+    font-size: 18px;
+    border-bottom: 2px solid #005B96;
+}
+
+h2{
+    margin-left: 15px;
+}
+h3{
+    margin-left: 25px;
+}
+h4{
+    margin-left: 35px;
+}
+
+.journal_title{
+    border-top: 1px solid #0054a6;
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 7px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #D1D2D4;
+    padding: 3px;
+    padding-right: 10px;
+}
+
+th {
+    text-transform: capitalize;
+    padding: 4px;
+}

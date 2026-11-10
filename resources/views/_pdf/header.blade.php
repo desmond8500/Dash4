@@ -1,101 +1,27 @@
+@php
+    $carbon->locale('fr_FR');
+@endphp
 
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <style>
-        body {
-            margin: 0;
-            padding: 0 20px;
-            font-size: 10px;
-            font-family: Arial, sans-serif;
-            color: #555;
-        }
-
-        .header {
-            width: 100%;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 5px;
-        }
-
-        .left {
-            float: left;
-        }
-
-        .right {
-            text-align: right;
-        }
-
-        /* Company */
-        .company{
-            text-align: right;
-        }
-        
-        .company_name {
-            font-size: 25px;
-            font-weight: bold;
-        }
-        
-        /* Document */
-        .document_title {
-            font-size: 20px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        
-        .document_date {
-            font-size: 15px;
-        }
-        
-        .document_reference {
-            font-size: 15px;
-            font-style: italic;
-            color: grey;
-            font-weight: bold;
-        }
-
-        .logo{
-            border-radius: 4px;
-            height: 50px;
-            width: 70px;
-            aspect-ratio: 1/1;
-        }
-    </style>
-    <link rel="stylesheet" href="{{ public_path('css/pdf.css') }}">
-</head>
-
-<body>
-    <div class="header">
-        <table style="width: 95%;">
-            <tr>
-                <td>
-                    <table>
-                        <tr>
-                            <td>
-                                <div class="logo">
-                                    @inlinedImage('img/logo.png')
-                                </div>
-                                {{-- <img src="" style="width:70px;height:auto;"> --}}
-                            </td>
-                            <td>
-                                <h3 class="company_name"> {{ $company->name }}</h3>
-
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <div class="company">
-                        <div class="document_title"> {{ $document->title }}</div>
-                        <div class="document_date">{{ $document->date }}</div>
-                        <div class="document_reference">{{ $document->reference }}</div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-</body>
-
-</html>
+<table class="table" style="margin-bottom: 10px;">
+    <tr>
+        <td width="80px" class="border-white">
+            @if ($logo)
+            <div style="width: 80px; height: 80px;">
+                <img src="{{ $logo }}" alt="logo" style="width:100%; height:100%;">
+            </div>
+            @else
+            <div class="logo" style="background: #{{ $color1 }}">
+                <div class="text-center" style="padding-top: 30px;">Logo</div>
+            </div>
+            @endif
+        </td>
+        <td width="300px" class="border-white fw-bold" align="left" style="{{ $title_css }}; color: #{{ $color1 }}">
+            <div>{{ env('MAIN_NAME') }}</div>
+        </td>
+        <td align="right" class="border-white">
+            <div  style="font-weight:bold; font-size: 1.5rem; text-transform: uppercase; color: #{{ $color1 }};">{{ $title }}</div>
+            <i>{{ $date }}</i>
+        </td>
+    </tr>
+</table>
+<hr>

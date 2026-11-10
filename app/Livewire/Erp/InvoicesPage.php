@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Livewire\Erp;
+
+use App\Http\Controllers\InvoiceController;
+use App\Livewire\Forms\InvoiceForm;
+use App\Models\Invoice;
+use App\Models\TaskStatus;
+use Livewire\Component;
+use Livewire\Features\SupportFileUploads\WithFileUploads;
+use Livewire\WithPagination;
+
+class InvoicesPage extends Component
+{
+    use WithPagination;
+    use WithFileUploads;
+
+    protected $paginationTheme = 'bootstrap';
+    public $search = '';
+    public $breadcrumbs;
+
+    public function mount()
+    {
+        $this->breadcrumbs = array(
+            array('name' => 'Devis', 'route' => route('invoices')),
+        );
+    }
+
+    public function render()
+    {
+        return view('livewire.erp.invoices-page',[
+            'invoices' => $this->filter_invoices(),
+            'statuses' => TaskStatus::all(),
+            'statuses' => InvoiceController::statut(),
+        ]);
+    }
+
+
+    public $filter;
+
+    function filter_invoices(){
+        if ($this->filter) {
+            return Invoice::where('statut', $this->filter)->search($this->search, 'reference')->paginate(18);
+        } else {
+            return Invoice::search($this->search, 'reference')->paginate(18);
+        }
+    }
+    function update_status($invoice_id, $status)
+    {
+        $invoice = Invoice::find($invoice_id);
+        $invoice->statut = $status;
+        $invoice->save();
+    }
+
+    public InvoiceForm $invoice_form;
+
+    function edit($id)
+    {
+        $this->invoice_form->set($id);
+        $this->dispatch('open-editInvoice');
+    }
+
+    function update_invoice()
+    {
+        $this->invoice_form->update();
+        $this->dispatch('close-editInvoice');
+    }
+    function delete_invoice($id)
+    {
+        $this->invoice_form->set($id);
+        $message = $this->invoice_form->delete();
+
+        if ($message == 'error') {
+            $this->js("alert('Ce devis contient des sections, veuillez les supprimer avant ')");
+        }
+
+        $this->dispatch('close-editInvoice');
+    }
+
+    function toggleInvoiceFavorite()
+    {
+        $this->invoice_form->favorite();
+    }
+}

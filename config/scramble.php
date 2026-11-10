@@ -18,7 +18,7 @@ return [
      * Multiple includes or wildcards → server defaults to / and paths stay full (/api/users).
      * Override with `servers`, or use Scramble::registerApi() for separate bases.
      */
-    'api_path' => 'api',
+    'api_path' => 'api/scramble/docs',
 
     /*
      * Your API domain. By default, app domain is used. This is also a part of the default API routes
@@ -55,6 +55,14 @@ return [
 
     'ui' => [
         'title' => null,
+    ],
+
+    /*
+     * Load Scramble's development tools on documentation pages. An explicit
+     * SCRAMBLE_DEV_TOOLS value takes precedence over APP_DEBUG.
+     */
+    'dev_tools' => [
+        'enabled' => env('SCRAMBLE_DEV_TOOLS', env('APP_DEBUG', false)),
     ],
 
     'renderer' => 'elements',
