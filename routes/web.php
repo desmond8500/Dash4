@@ -340,7 +340,7 @@ Route::get('browsershot', function () {
 
 })->name('browsershot');
 
-// Volt::route('/konva', 'test.konvapage')->name('konva');
+// Route::livewire('/konva', 'test.konvapage')->name('konva');
 
 // Fallback
 Route::fallback(function() {

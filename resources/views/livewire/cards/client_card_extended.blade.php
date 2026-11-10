@@ -1,8 +1,7 @@
 <?php
 
-use Livewire\Volt\Component;
+use Livewire\Component;
 use App\Models\Client;
-use function Livewire\Volt\{mount};
 use App\Livewire\Forms\clientForm;
 use Livewire\WithFileUploads;
 

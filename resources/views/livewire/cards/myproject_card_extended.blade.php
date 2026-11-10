@@ -1,6 +1,6 @@
 <?php
 
-use Livewire\Volt\Component;
+use Livewire\Component;
 use App\Livewire\Forms\MyprojectForm;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;

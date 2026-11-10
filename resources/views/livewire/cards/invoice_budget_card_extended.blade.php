@@ -1,6 +1,6 @@
 <?php
 
-use Livewire\Volt\Component;
+use Livewire\Component;
 use \App\Models\Invoice;
 use \App\Models\InvoiceSpent;
 use \App\Models\InvoiceAcompte;

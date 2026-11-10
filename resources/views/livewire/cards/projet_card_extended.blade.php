@@ -1,6 +1,6 @@
 <?php
 
-use Livewire\Volt\Component;
+use Livewire\Component;
 use App\Livewire\Forms\projetForm;
 use Jantinnerezo\LivewireAlert\Facades\LivewireAlert;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;

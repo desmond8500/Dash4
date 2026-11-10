@@ -1,6 +1,6 @@
 <?php
 
-use Livewire\Volt\Component;
+use Livewire\Component;
 use App\Livewire\Forms\BuildingForm;
 use App\Models\Building;
 

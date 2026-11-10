@@ -1,6 +1,6 @@
 <?php
 
-use Livewire\Volt\Component;
+use Livewire\Component;
 use App\Livewire\Forms\InvoiceForm;
 use Livewire\WithPagination;
 use App\Models\Invoice;
